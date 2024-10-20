@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+app:
+  jwtRefreshExpirationMs: 86400000
