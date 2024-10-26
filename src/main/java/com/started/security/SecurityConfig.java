@@ -1,6 +1,7 @@
 package com.started.security;
 
 import com.started.config.AppUserDetailsService;
+import com.started.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/signup").permitAll()
                         .requestMatchers("/auth/login/**").permitAll()
                         .requestMatchers("/auth/refresh-token/**").permitAll()
-                        .requestMatchers("/home").authenticated().anyRequest().authenticated()
+                        .requestMatchers("/api/hello/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/regular/hello/**").hasAnyAuthority(Role.REGULAR.name())
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

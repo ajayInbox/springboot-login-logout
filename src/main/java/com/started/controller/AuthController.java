@@ -11,6 +11,7 @@ import com.started.response.TokenRefreshResponse;
 import com.started.security.JwtUtils;
 import com.started.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     final private AuthenticationManager manager;
@@ -40,13 +42,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request){
+        log.info("inside login method");
         AppUserDetails userDetails = doAuthenticate(request.getEmail(), request.getPassword());
 
         String token = jwtUtils.generateToken(userDetails);
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .toList();
-
+        log.info("roles: {}" ,roles);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        log.info("refresh token: {}", refreshToken);
         JwtResponse jwtResponse = JwtResponse.builder()
                 .jwtToken(token)
                 .userName(userDetails.getUsername())

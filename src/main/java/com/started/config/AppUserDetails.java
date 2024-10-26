@@ -25,10 +25,7 @@ public class AppUserDetails implements UserDetails {
         this.userName = user.getEmail();
         this.password = user.getPassword();
         this.isEnabled = user.isEnabled();
-        this.authorities = Arrays.stream(user.getRole()
-                .split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

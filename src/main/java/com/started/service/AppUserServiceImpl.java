@@ -1,6 +1,7 @@
 package com.started.service;
 
 import com.started.entity.AppUser;
+import com.started.entity.Role;
 import com.started.repository.AppUserRepository;
 import com.started.request.SignUpRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class AppUserServiceImpl implements AppUserService{
                 .email(request.getEmail())
                 .userName(request.getUserName())
                 .password(encoder.encode(request.getPassword()))
-                .role("ADMIN")
+                .role(Role.REGULAR)
                 .isEnabled(true)
                 .build();
         AppUser savedUser = userRepository.save(newUser);
